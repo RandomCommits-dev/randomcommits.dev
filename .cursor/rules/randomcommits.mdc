@@ -1,0 +1,38 @@
+---
+description: randomcommits.dev project context, conventions, and how to ship a new lab tool
+alwaysApply: true
+---
+
+# randomcommits.dev
+
+Landing page and digital garden for the **RandomCommits-dev** GitHub org.
+Astro 7 + React islands, deployed to **GitHub Pages** (custom apex domain
+`randomcommits.dev`) via `.github/workflows/deploy.yml` on push to `main`.
+
+## Writing style
+- **Never use em dashes (`—`) in any web content.** This includes page copy, titles, meta descriptions, garden notes, and UI strings. Use a colon, comma, parentheses, or a new sentence instead.
+- Avoid en dashes (`–`) in prose too; prefer plain words.
+
+## Conventions
+- **Repo prefixes:** none = flagship, `lab-` = experiments/tools, `template-` = starters, `study-` = learning. Tag repos with topics.
+- **Notes** live in `src/content/notes` (`.md`/`.mdx`). Growth stages: `seedling`, `budding`, `evergreen`.
+- **Tools are privacy-first:** run entirely client-side, nothing leaves the browser, and say so in the UI.
+- **Homepage grid** is live from the org API (`repos` loader in `src/content.config.ts`). **`src/pages/lab.astro`** is the public "coming soon" roadmap, data-driven via its `sections` array.
+- **Styling:** dark garden theme via CSS vars in `src/layouts/BaseLayout.astro`; reuse `.tile`, `.grid`, `.badge`.
+
+## Backlog
+The planned security tools/ideas are the `sections` array in `src/pages/lab.astro`
+(each entry: `repo`, `type`, `desc`, with a `SOON` badge). This is the work queue.
+
+## Recipe: ship one lab tool
+1. Pick an idea from `src/pages/lab.astro`.
+2. **Create its repo** in the RandomCommits-dev org (public, empty). The PAT cannot create org repos, so create it via the GitHub web UI, then push. Name = the idea's `repo` field (e.g. `lab-jwt-lab`).
+3. Scaffold (Astro + React for browser tools): `npm create astro` then `astro add react`. Add the Pages deploy workflow and pin **Node 22**.
+4. Build the tool client-side; include a "runs in your browser, nothing is sent anywhere" banner.
+5. Back here: the live grid auto-lists it once it has the right prefix/topic. Update or remove its `/lab` `SOON` entry, and optionally write a garden note explaining the concept.
+6. Commit and push each repo to deploy.
+
+## Gotchas
+- Astro 7 needs **Node >= 22.12**; CI must use `actions/setup-node@v4` with `node-version: 22` (not the `withastro/action` default).
+- Fine-grained PAT can read/write files and create issues/PRs, but **cannot create org repos**. Make those manually.
+- GitHub MCP server id is `user-github` (PAT-based).

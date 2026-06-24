@@ -1,0 +1,234 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const sections = [
+	{
+		title: 'Browser tools',
+		blurb:
+			'Privacy-first security utilities that run entirely client-side. Nothing you paste ever leaves your machine.',
+		ideas: [
+			{
+				repo: 'lab-jwt-lab',
+				type: 'browser · react',
+				desc: 'Decode and inspect JSON Web Tokens entirely in the browser. Surfaces expiry, audience, and issuer claims, and actively warns about classic pitfalls: `alg: none` acceptance, HS/RS algorithm confusion, and missing expiration. A linter for tokens, with nothing ever sent to a server.',
+			},
+			{
+				repo: 'lab-secret-radar',
+				type: 'browser · regex',
+				desc: 'Paste a chunk of code, config, or logs and instantly surface leaked credentials (AWS keys, GitHub PATs, Stripe keys, private keys, and JWTs) using the same style of detection rules as gitleaks. Runs locally, so you can safely scan sensitive snippets.',
+			},
+			{
+				repo: 'lab-hash-forge',
+				type: 'browser · wasm',
+				desc: "A CyberChef-lite recipe builder. Chain operations (Base64, XOR, gzip, URL-encode, SHA-256, AES) into a live pipeline and watch data transform. Powered by WebCrypto and WASM, with the whole recipe encoded in the URL hash so you can share a transformation without sharing the data.",
+			},
+			{
+				repo: 'lab-har-sanitizer',
+				type: 'browser · file',
+				desc: 'Drop in a browser `.har` capture and automatically redact cookies, authorization headers, bearer tokens, and other secrets before you hand it to a colleague or vendor for debugging. Fully client-side.',
+			},
+			{
+				repo: 'lab-email-headers',
+				type: 'browser · parser',
+				desc: 'Paste raw email headers and get a readable analysis: the full chain of `Received` hops laid out on a timeline, SPF / DKIM / DMARC results, and flags for spoofing and phishing indicators.',
+			},
+			{
+				repo: 'lab-cert-peek',
+				type: 'browser · pki',
+				desc: 'Drop in a PEM certificate, chain, or CSR and get a clean breakdown: subject, SANs, key type and size, signature algorithm, validity window, and flags for weak algorithms or imminent expiry. Parsed in-browser with pkijs / forge.',
+			},
+			{
+				repo: 'lab-csp-studio',
+				type: 'browser · web',
+				desc: 'Build a Content-Security-Policy visually, with plain-English explanations of every directive, then paste an existing header to see exactly what it would block or allow. Catches common mistakes like overly broad `unsafe-inline` or a missing `default-src`.',
+			},
+			{
+				repo: 'lab-pw-entropy',
+				type: 'browser · react',
+				desc: 'A password and passphrase strength visualizer with real entropy math, zxcvbn scoring, and a built-in diceware generator. An animated "time to crack" meter makes the math tangible and motivating.',
+			},
+			{
+				repo: 'lab-pwned-check',
+				type: 'browser · api',
+				desc: "Check whether a password appears in known breaches using Have I Been Pwned's k-anonymity range API. Only the first five characters of a SHA-1 hash ever leave the browser. A working demonstration of privacy-preserving breach lookups.",
+			},
+			{
+				repo: 'lab-cvss-calc',
+				type: 'browser · react',
+				desc: 'A faster, friendlier CVSS 3.1 and 4.0 calculator. Adjust the metrics, watch the score and severity update live, and copy a shareable vector string straight into your advisories and tickets.',
+			},
+			{
+				repo: 'lab-perm-decoder',
+				type: 'browser · util',
+				desc: 'Translate cryptic permissions into plain English. Paste a Unix mode like `0644`, a symbolic `rwxr-xr-x`, or a Windows ACL and get a clear, human breakdown of exactly who can do what.',
+			},
+			{
+				repo: 'lab-passkey-demo',
+				type: 'browser · webauthn',
+				desc: 'An interactive WebAuthn / passkey playground that walks through the registration and authentication ceremonies step by step, visualizing the challenge and response flow and the data exchanged. A hands-on way to understand passwordless auth.',
+			},
+		],
+	},
+	{
+		title: 'Blue team & detection',
+		blurb: 'Tools for the defenders: detection engineering, rule-writing, and analysis.',
+		ideas: [
+			{
+				repo: 'lab-yara-playground',
+				type: 'browser · wasm',
+				desc: 'Run YARA rules against pasted samples right in the browser via a WASM build of the engine. Write or tweak a rule, hit run, and see matches and matched strings instantly. No install, no upload.',
+			},
+			{
+				repo: 'lab-sigma-translate',
+				type: 'browser · detection',
+				desc: 'Paste a Sigma detection rule and get the equivalent query for Splunk SPL, Elastic / Lucene, or Microsoft KQL. Detection-as-code translation without ever leaving the page.',
+			},
+			{
+				repo: 'lab-jwt-cracker',
+				type: 'browser · wasm · edu',
+				desc: 'An educational WASM dictionary attack against weakly-signed HS256 tokens. Feed it a token and a wordlist to demonstrate why short, guessable signing secrets are dangerous. Pairs naturally with lab-jwt-lab.',
+			},
+		],
+	},
+	{
+		title: 'Visualization',
+		blurb: 'Make security data legible: graphs, paths, and relationships.',
+		ideas: [
+			{
+				repo: 'study-attack-path',
+				type: 'react · d3',
+				desc: 'An interactive graph visualizer for attack paths. Feed it nmap output, Active Directory relationships, or a custom JSON graph and explore the nodes and edges with D3 and React. Doubles as an embeddable island for garden write-ups.',
+			},
+		],
+	},
+	{
+		title: 'Org & supply chain',
+		blurb: 'Make the whole org exemplary, not just one repo. Security hygiene as a default.',
+		ideas: [
+			{
+				repo: 'template-secure-default',
+				type: 'template repo',
+				desc: "The org's hardened project starter. Ships with GitHub Actions pinned to commit SHAs, a scanning suite (CodeQL, gitleaks, Trivy, dependency-review), a SECURITY.md, Dependabot config, and branch-protection guidance, so every new repo begins with good hygiene baked in.",
+			},
+			{
+				repo: '.github · workflow-templates',
+				type: 'github actions',
+				desc: "Reusable security-scan workflows published in the org's .github repo, so any project can adopt secret scanning, SAST, and dependency checks in a single click from its Actions tab.",
+			},
+			{
+				repo: 'lab-action-pinner',
+				type: 'cli · action',
+				desc: 'A small CLI and GitHub Action that rewrites `uses: owner/action@v3` references to pinned commit SHAs across a repository, hardening your workflows against supply-chain tampering. A genuinely useful quick win.',
+			},
+		],
+	},
+	{
+		title: 'Content & learning',
+		blurb: 'Learning in public: notes that grow in the garden.',
+		ideas: [
+			{
+				repo: 'study-cve-writeups',
+				type: 'garden notes',
+				desc: 'A growing collection of CVE and CTF write-ups published as garden notes, using the seedling to evergreen growth stages to show which analyses are fresh sketches versus polished references.',
+			},
+			{
+				repo: 'study-threat-models',
+				type: 'templates',
+				desc: 'Reusable STRIDE and LINDDUN threat-model templates as Markdown, ready to drop into any project for a quick, structured security review.',
+			},
+			{
+				repo: 'study-attack-glossary',
+				type: 'garden · wiki',
+				desc: 'A cross-linked MITRE ATT&CK glossary: techniques, tactics, and notes wired together with wikilinks and backlinks, growing into a personal knowledge graph over time.',
+			},
+		],
+	},
+	{
+		title: 'For the vibes',
+		blurb: 'Pure mischief and cyberpunk aesthetics. Low stakes, high fun.',
+		ideas: [
+			{
+				repo: 'lab-threat-dashboard',
+				type: 'react · art',
+				desc: 'A deliberately over-the-top, terminal-aesthetic security operations dashboard rendered as a React island: ASCII maps, blinking "threat" feeds, and glowing counters. Equal parts data-viz practice and pure cyberpunk vibes.',
+			},
+			{
+				repo: 'lab-honeypot-cam',
+				type: 'static · honeypot',
+				desc: 'A convincing-looking fake admin login page that records what automated bots and scanners try to submit (client-side, or to a webhook you control). A tiny, mischievous honeypot, very on-brand for random commits.',
+			},
+			{
+				repo: 'study-ctf-host',
+				type: 'template',
+				desc: 'A template for hosting static, jeopardy-style CTF challenges directly on GitHub Pages. Challenge board as a React island, flags verified client-side via hashing. No backend required.',
+			},
+		],
+	},
+];
+
+const total = sections.reduce((n, s) => n + s.ideas.length, 0);
+---
+
+<BaseLayout
+	title="Coming soon · randomcommits.dev"
+	description="A roadmap of security-flavored, vibe-driven coding projects coming soon to randomcommits.dev."
+>
+	<p class="eyebrow">🧪 the lab</p>
+	<h1>Coming soon</h1>
+	<p class="lede">
+		{total} security-flavored, vibe-driven projects planned for the garden. Most
+		are privacy-first tools that run entirely in your browser. Nothing phones
+		home. Tended at random, shipped when the vibe is right.
+	</p>
+
+	{sections.map((section) => (
+		<section class="grid-section">
+			<h2>{section.title}</h2>
+			<p class="section-blurb">{section.blurb}</p>
+			<div class="grid">
+				{section.ideas.map((idea) => (
+					<article class="tile">
+						<div class="idea-head">
+							<h3>{idea.repo}</h3>
+							<span class="soon-badge">soon</span>
+						</div>
+						<p>{idea.desc}</p>
+						<span class="badge">{idea.type}</span>
+					</article>
+				))}
+			</div>
+		</section>
+	))}
+
+	<style>
+		.section-blurb {
+			color: var(--muted);
+			margin: -0.75rem 0 1.5rem;
+			max-width: 65ch;
+		}
+
+		.idea-head {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			gap: 0.75rem;
+			margin-bottom: 0.5rem;
+		}
+
+		.idea-head h3 {
+			margin: 0;
+		}
+
+		.soon-badge {
+			flex-shrink: 0;
+			font-size: 0.65rem;
+			text-transform: uppercase;
+			letter-spacing: 0.06em;
+			color: #d29922;
+			background: rgba(210, 153, 34, 0.14);
+			border: 1px solid rgba(210, 153, 34, 0.35);
+			border-radius: 999px;
+			padding: 0.1rem 0.55rem;
+		}
+	</style>
+</BaseLayout>

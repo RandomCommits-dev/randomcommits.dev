@@ -1,0 +1,18 @@
+---
+title: "Notes can run code now (hello, MDX)"
+description: "MDX lets a note embed live, interactive React islands."
+pubDate: 2026-06-24
+tags: ["mdx", "astro", "react"]
+growth: "seedling"
+---
+
+import CommitGenerator from '../../components/CommitGenerator.tsx';
+
+This note is written in **MDX**, so it can import and render components right
+inside the prose. Here's the same interactive React island from the homepage,
+hydrated inline:
+
+<CommitGenerator client:load />
+
+Everything above and below is plain Markdown. The component just drops in
+wherever it's needed.

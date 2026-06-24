@@ -4,6 +4,9 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+  schedule:
+    # Rebuild daily so newly-created/updated org repos appear on the grid.
+    - cron: '0 6 * * *'
 
 permissions:
   contents: read
@@ -29,6 +32,9 @@ jobs:
         run: npm ci
       - name: Build site
         run: npm run build
+        env:
+          # Lets the repos content loader call the GitHub API at 5000 req/hr.
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
