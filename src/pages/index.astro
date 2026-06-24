@@ -1,0 +1,219 @@
+---
+import CommitGenerator from '../components/CommitGenerator.tsx';
+
+const projects = [
+  { name: 'Flagship projects', desc: 'Built to last. The ones we are proud of.', tag: 'no prefix' },
+  { name: 'lab-*', desc: 'Experiments & vibe-coding sessions.', tag: 'experiment' },
+  { name: 'template-*', desc: 'Starter templates we reach for.', tag: 'template' },
+  { name: 'study-*', desc: 'Learning in public.', tag: 'study' },
+];
+---
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="generator" content={Astro.generator} />
+		<meta
+			name="description"
+			content="randomcommits.dev — a landing page and digital garden for random, vibe-driven coding projects."
+		/>
+		<title>randomcommits.dev — digital garden</title>
+	</head>
+	<body>
+		<main>
+			<section class="hero">
+				<p class="eyebrow">🌱 randomcommits.dev</p>
+				<h1>Welcome to the garden.</h1>
+				<p class="lede">
+					Our landing page and digital garden for all the random,
+					vibe-driven coding projects we work on. Some things here are
+					polished. Some are half-finished sketches. All of them are
+					commits we felt like making.
+				</p>
+				<CommitGenerator client:load />
+			</section>
+
+			<section class="grid-section">
+				<h2>What you'll find</h2>
+				<div class="grid">
+					{projects.map((p) => (
+						<article class="tile">
+							<h3>{p.name}</h3>
+							<p>{p.desc}</p>
+							<span class="badge">{p.tag}</span>
+						</article>
+					))}
+				</div>
+			</section>
+
+			<footer>
+				<a href="https://github.com/RandomCommits-dev">GitHub</a>
+				<span>·</span>
+				<span>Tended irregularly. Watered with curiosity. 🌿</span>
+			</footer>
+		</main>
+
+		<style is:global>
+			:root {
+				--bg: #0d1117;
+				--surface: #161b22;
+				--border: #30363d;
+				--text: #e6edf3;
+				--muted: #9198a1;
+				--accent: #3fb950;
+				--accent-soft: rgba(63, 185, 80, 0.12);
+			}
+
+			* { box-sizing: border-box; }
+
+			html { color-scheme: dark; }
+
+			body {
+				margin: 0;
+				background:
+					radial-gradient(1200px 600px at 50% -10%, var(--accent-soft), transparent),
+					var(--bg);
+				color: var(--text);
+				font-family: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+				line-height: 1.6;
+				min-height: 100vh;
+			}
+
+			main {
+				max-width: 880px;
+				margin: 0 auto;
+				padding: 5rem 1.5rem 3rem;
+			}
+
+			.eyebrow {
+				color: var(--accent);
+				font-weight: 600;
+				letter-spacing: 0.02em;
+				margin: 0 0 0.5rem;
+			}
+
+			h1 {
+				font-size: clamp(2.5rem, 6vw, 4rem);
+				line-height: 1.05;
+				margin: 0 0 1rem;
+				letter-spacing: -0.02em;
+			}
+
+			.lede {
+				color: var(--muted);
+				font-size: 1.15rem;
+				max-width: 60ch;
+				margin: 0 0 2rem;
+			}
+
+			.commit-card {
+				background: var(--surface);
+				border: 1px solid var(--border);
+				border-radius: 14px;
+				padding: 1.5rem;
+				display: flex;
+				flex-direction: column;
+				gap: 1rem;
+				align-items: flex-start;
+			}
+
+			.commit-message {
+				font-family: ui-monospace, 'SFMono-Regular', 'Cascadia Code', Menlo, monospace;
+				font-size: 1.05rem;
+				color: var(--text);
+				background: #0d1117;
+				border: 1px solid var(--border);
+				border-radius: 8px;
+				padding: 0.75rem 1rem;
+				width: 100%;
+				word-break: break-word;
+			}
+
+			.commit-button {
+				background: var(--accent);
+				color: #0d1117;
+				font-weight: 600;
+				font-size: 0.95rem;
+				border: none;
+				border-radius: 8px;
+				padding: 0.65rem 1.1rem;
+				cursor: pointer;
+				transition: transform 0.05s ease, filter 0.15s ease;
+			}
+
+			.commit-button:hover { filter: brightness(1.08); }
+			.commit-button:active { transform: translateY(1px); }
+
+			.commit-count {
+				color: var(--muted);
+				font-size: 0.9rem;
+				margin: 0;
+			}
+
+			.grid-section { margin-top: 4rem; }
+
+			h2 {
+				font-size: 1.5rem;
+				margin: 0 0 1.5rem;
+			}
+
+			.grid {
+				display: grid;
+				grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+				gap: 1rem;
+			}
+
+			.tile {
+				background: var(--surface);
+				border: 1px solid var(--border);
+				border-radius: 12px;
+				padding: 1.25rem;
+				transition: border-color 0.15s ease, transform 0.15s ease;
+			}
+
+			.tile:hover {
+				border-color: var(--accent);
+				transform: translateY(-2px);
+			}
+
+			.tile h3 {
+				margin: 0 0 0.4rem;
+				font-family: ui-monospace, 'SFMono-Regular', Menlo, monospace;
+				color: var(--accent);
+				font-size: 1.05rem;
+			}
+
+			.tile p {
+				margin: 0 0 0.75rem;
+				color: var(--muted);
+				font-size: 0.95rem;
+			}
+
+			.badge {
+				display: inline-block;
+				font-size: 0.75rem;
+				color: var(--accent);
+				background: var(--accent-soft);
+				border-radius: 999px;
+				padding: 0.15rem 0.6rem;
+			}
+
+			footer {
+				margin-top: 4rem;
+				padding-top: 1.5rem;
+				border-top: 1px solid var(--border);
+				color: var(--muted);
+				font-size: 0.9rem;
+				display: flex;
+				gap: 0.6rem;
+				flex-wrap: wrap;
+				align-items: center;
+			}
+
+			footer a { color: var(--accent); text-decoration: none; }
+			footer a:hover { text-decoration: underline; }
+		</style>
+	</body>
+</html>
