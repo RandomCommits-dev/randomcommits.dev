@@ -1,0 +1,25 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+	title="Page not found · randomcommits.dev"
+	description="This page hasn't been committed yet."
+>
+	<p class="eyebrow">404</p>
+	<h1>This page hasn't been committed yet.</h1>
+	<p class="lede">
+		The route you followed doesn't exist in the garden. Maybe it was never
+		pushed, or maybe it got rebased away.
+	</p>
+	<div class="grid">
+		<a class="tile" href="/">
+			<h3>Home</h3>
+			<p>Back to the landing page and repo grid.</p>
+		</a>
+		<a class="tile" href="/garden">
+			<h3>Garden</h3>
+			<p>Browse notes, TILs, and half-baked ideas.</p>
+		</a>
+	</div>
+</BaseLayout>

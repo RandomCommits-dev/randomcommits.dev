@@ -17,6 +17,12 @@ npm run build    # build to ./dist
 npm run preview  # preview the production build locally
 ```
 
+For the homepage repo grid during local builds, copy `.env.example` to `.env` and optionally set `GITHUB_TOKEN`. Never commit real tokens. See [SECURITY.md](SECURITY.md).
+
+## Security
+
+The deployed site is fully static with no backend. See [SECURITY.md](SECURITY.md) for the threat model, secret handling, and vulnerability reporting.
+
 ## Project structure
 
 ```

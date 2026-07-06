@@ -23,6 +23,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Secret scan
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Set up Node
         uses: actions/setup-node@v4
         with:
@@ -35,6 +39,10 @@ jobs:
         env:
           # Lets the repos content loader call the GitHub API at 5000 req/hr.
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Verify no secrets in build output
+        run: |
+          ! grep -rE 'ghp_|gho_|github_pat_|AKIA[0-9A-Z]{16}|Bearer eyJ' dist/ || \
+            (echo "Possible secret leaked into dist/" && exit 1)
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
