@@ -69,11 +69,6 @@ export const sections: LabSection[] = [
 				desc: 'Run YARA rules against pasted samples right in the browser via a WASM build of the engine. Write or tweak a rule, hit run, and see matches and matched strings instantly. No install, no upload.',
 			},
 			{
-				repo: 'lab-sigma-translate',
-				type: 'browser · detection',
-				desc: 'Paste a Sigma detection rule and get the equivalent query for Splunk SPL, Elastic / Lucene, or Microsoft KQL. Detection-as-code translation without ever leaving the page.',
-			},
-			{
 				repo: 'lab-jwt-cracker',
 				type: 'browser · wasm · edu',
 				desc: 'An educational WASM dictionary attack against weakly-signed HS256 tokens. Feed it a token and a wordlist to demonstrate why short, guessable signing secrets are dangerous. Pairs naturally with lab-jwt-lab.',
