@@ -3,8 +3,19 @@ import type { SigmaTarget } from './sigma-sample-rule';
 
 let converter: SigmaConverter | null = null;
 let worker: Worker | null = null;
+let warmedTarget: SigmaTarget | null = null;
+let warmingTarget: SigmaTarget | null = null;
+let warmupPromise: Promise<{ success: boolean; error?: string }> | null = null;
 
-function createConverter(onStatus: (status: EngineStatus) => void): SigmaConverter {
+const statusListeners = new Set<(status: EngineStatus) => void>();
+
+function notifyStatus(status: EngineStatus): void {
+	for (const listener of statusListeners) {
+		listener(status);
+	}
+}
+
+function createConverter(): SigmaConverter {
 	if (typeof window === 'undefined') {
 		throw new Error('Sigma conversion is only available in the browser');
 	}
@@ -15,24 +26,62 @@ function createConverter(onStatus: (status: EngineStatus) => void): SigmaConvert
 
 	return new SigmaConverter({
 		worker,
-		onStatus,
+		pipelinePackages: [],
+		onStatus: notifyStatus,
 	});
 }
 
-export function getSigmaConverter(onStatus: (status: EngineStatus) => void): SigmaConverter {
+export function getSigmaConverter(): SigmaConverter {
 	if (!converter) {
-		converter = createConverter(onStatus);
+		converter = createConverter();
 	}
 	return converter;
+}
+
+export function subscribeEngineStatus(listener: (status: EngineStatus) => void): () => void {
+	statusListeners.add(listener);
+	return () => statusListeners.delete(listener);
+}
+
+export async function warmupEngine(
+	target: SigmaTarget,
+): Promise<{ success: boolean; error?: string }> {
+	if (warmedTarget === target && getSigmaConverter().isReady()) {
+		return { success: true };
+	}
+
+	if (warmupPromise && warmingTarget === target) {
+		return warmupPromise;
+	}
+
+	warmingTarget = target;
+	warmupPromise = (async () => {
+		const engine = getSigmaConverter();
+		const result = await engine.installBackend(target);
+		if (result.success) {
+			warmedTarget = target;
+		}
+		return result;
+	})();
+
+	try {
+		return await warmupPromise;
+	} finally {
+		warmupPromise = null;
+		warmingTarget = null;
+	}
 }
 
 export async function convertSigmaRule(
 	rule: string,
 	target: SigmaTarget,
-	onStatus: (status: EngineStatus) => void,
 ): Promise<{ query: string | null; error: string | null }> {
-	const engine = getSigmaConverter(onStatus);
-	const { query, error } = await engine.convert(rule, target);
+	const warmup = await warmupEngine(target);
+	if (!warmup.success) {
+		return { query: null, error: warmup.error ?? 'Failed to load conversion backend.' };
+	}
+
+	const { query, error } = await getSigmaConverter().convert(rule, target);
 
 	if (error) {
 		return { query: null, error };
@@ -46,6 +95,10 @@ export function disposeSigmaConverter(): void {
 	converter = null;
 	worker?.terminate();
 	worker = null;
+	warmedTarget = null;
+	warmingTarget = null;
+	warmupPromise = null;
+	statusListeners.clear();
 }
 
 export function formatEngineStatus(status: EngineStatus): string {
