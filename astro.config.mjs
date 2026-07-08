@@ -11,4 +11,9 @@ import sitemap from '@astrojs/sitemap';
 export default defineConfig({
   site: 'https://randomcommits.dev',
   integrations: [react(), mdx(), sitemap()],
+  vite: {
+    worker: {
+      format: 'es',
+    },
+  },
 });

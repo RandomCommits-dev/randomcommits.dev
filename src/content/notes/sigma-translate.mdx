@@ -6,6 +6,8 @@ tags: ["security", "sigma", "detection", "lab"]
 growth: "budding"
 ---
 
+import SigmaTranslate from '../../components/SigmaTranslate.tsx';
+
 [Sigma](https://sigmahq.io/) is the lingua franca of detection engineering: a
 vendor-neutral YAML format for describing suspicious activity in log data. The
 [SigmaHQ rule repository](https://github.com/SigmaHQ/sigma) hosts thousands of
@@ -18,19 +20,21 @@ backends for Splunk, Elasticsearch, Kusto, and dozens more. Powerful, but
 overkill when you just want to preview how a rule looks in Splunk SPL before
 committing it to a repo.
 
-## What the lab tool does
+<div class="privacy-banner">
+  <span aria-hidden="true">🔒</span>
+  <p>
+    <strong>Runs in your browser.</strong> Your rules are never uploaded.
+    Conversion uses pySigma via Pyodide (WebAssembly), fully offline after the
+    first load.
+  </p>
+</div>
 
-[lab-sigma-translate](https://github.com/RandomCommits-dev/lab-sigma-translate)
-runs pySigma in your browser via [Pyodide](https://pyodide.org/) (Python compiled
-to WebAssembly). Paste a Sigma rule, pick a target backend, and get the
-equivalent query:
+<SigmaTranslate client:load />
 
-- **Splunk SPL** for Splunk Enterprise and Cloud
-- **Elastic / Lucene** for Elasticsearch and OpenSearch
-- **Microsoft KQL** for Sentinel and Defender
-
-Nothing is uploaded. The first conversion downloads Pyodide and the pySigma
-packages (~tens of MB), then subsequent conversions are fast and fully offline.
+Paste a Sigma rule, pick Splunk SPL, Elastic / Lucene, or Microsoft KQL, and
+click Convert. The first run downloads Pyodide and the pySigma backends; after
+that, conversions are fast and stay local. Source lives in the monorepo at
+[lab-sigma-translate](https://github.com/RandomCommits-dev/randomcommits.dev/tree/main/lab-sigma-translate).
 
 ## Field names are the catch
 
@@ -42,7 +46,7 @@ drop-in query. Always verify field mappings against your data source before
 deploying.
 
 For production pipelines with custom field maps and logsource transforms, reach
-for [sigma-cli](https://github.com/SigmaHQ/sigma-cli) locally. The browser tool
+for [sigma-cli](https://github.com/SigmaHQ/sigma-cli) locally. This garden tool
 is for quick previews and learning, not CI/CD rule deployment.
 
 ## When to reach for it
@@ -51,5 +55,3 @@ is for quick previews and learning, not CI/CD rule deployment.
 - Teaching someone how Sigma's `detection` block maps to real queries
 - Comparing how the same rule looks across Splunk, Elastic, and KQL
 - Working on sensitive rules you do not want to paste into a web converter
-
-Live at [lab-sigma-translate](https://randomcommits-dev.github.io/lab-sigma-translate/).
