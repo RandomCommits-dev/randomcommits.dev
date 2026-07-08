@@ -7,6 +7,11 @@ const repos = (await getCollection('repos')).sort(
 	(a, b) => +new Date(b.data.updatedAt) - +new Date(a.data.updatedAt),
 );
 
+const notes = (await getCollection('notes', ({ data }) => !data.draft)).sort(
+	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
+const latestNotes = notes.slice(0, 3);
+
 const categories = [
 	{ label: 'Flagship', test: (n: string) => !/^(lab|template|study)-/.test(n) },
 	{ label: 'Experiments', test: (n: string) => n.startsWith('lab-') },
@@ -39,6 +44,23 @@ const fallback = [
 		</p>
 		<CommitGenerator client:load />
 	</section>
+
+	{latestNotes.length > 0 && (
+		<section class="grid-section latest-section">
+			<div class="section-header">
+				<h2>Latest from the garden</h2>
+				<a class="section-link" href="/garden">View all notes →</a>
+			</div>
+			<div class="grid">
+				{latestNotes.map((note) => (
+					<a class="tile" href={`/garden/${note.id}/`}>
+						<h3>{note.data.title}</h3>
+						<p>{note.data.description ?? 'A note from the garden.'}</p>
+					</a>
+				))}
+			</div>
+		</section>
+	)}
 
 	{repos.length > 0 ? (
 		grouped.map((group) => (

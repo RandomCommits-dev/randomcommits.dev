@@ -1,4 +1,4 @@
-export type LabIdea = { repo: string; type: string; desc: string };
+export type LabIdea = { repo: string; type: string; desc: string; href?: string };
 export type LabSection = { title: string; blurb: string; ideas: LabIdea[] };
 
 export const sections: LabSection[] = [
@@ -99,6 +99,7 @@ export const sections: LabSection[] = [
 				repo: '.github · workflow-templates',
 				type: 'github actions',
 				desc: "Reusable security-scan workflows published in the org's .github repo, so any project can adopt secret scanning, SAST, and dependency checks in a single click from its Actions tab.",
+				href: 'https://github.com/RandomCommits-dev/.github',
 			},
 			{
 				repo: 'lab-action-pinner',

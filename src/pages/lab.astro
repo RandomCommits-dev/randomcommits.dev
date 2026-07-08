@@ -1,6 +1,8 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { sections } from '../data/lab-sections';
+import { liveTools } from '../data/live-tools';
+import { ideaHref } from '../lib/lab-links';
 
 const total = sections.reduce((n, s) => n + s.ideas.length, 0);
 ---
@@ -17,20 +19,45 @@ const total = sections.reduce((n, s) => n + s.ideas.length, 0);
 		home. Tended at random, shipped when the vibe is right.
 	</p>
 
+	<section class="grid-section">
+		<h2>Live in the garden</h2>
+		<p class="section-blurb">
+			These browser tools are already shipped as interactive garden notes. Try them
+			in your browser: nothing you paste is sent anywhere.
+		</p>
+		<div class="grid">
+			{liveTools.map((tool) => (
+				<a class="tile" href={tool.gardenHref}>
+					<div class="idea-head">
+						<h3>{tool.repo}</h3>
+						<span class="live-badge">live</span>
+					</div>
+					<p>{tool.description}</p>
+					<span class="badge">browser · garden note</span>
+				</a>
+			))}
+		</div>
+	</section>
+
 	{sections.map((section) => (
 		<section class="grid-section">
 			<h2>{section.title}</h2>
 			<p class="section-blurb">{section.blurb}</p>
 			<div class="grid">
 				{section.ideas.map((idea) => (
-					<article class="tile">
+					<a
+						class="tile"
+						href={ideaHref(idea)}
+						target="_blank"
+						rel="noopener noreferrer"
+					>
 						<div class="idea-head">
 							<h3>{idea.repo}</h3>
 							<span class="soon-badge">soon</span>
 						</div>
 						<p>{idea.desc}</p>
 						<span class="badge">{idea.type}</span>
-					</article>
+					</a>
 				))}
 			</div>
 		</section>
@@ -63,6 +90,18 @@ const total = sections.reduce((n, s) => n + s.ideas.length, 0);
 			color: #d29922;
 			background: rgba(210, 153, 34, 0.14);
 			border: 1px solid rgba(210, 153, 34, 0.35);
+			border-radius: 999px;
+			padding: 0.1rem 0.55rem;
+		}
+
+		.live-badge {
+			flex-shrink: 0;
+			font-size: 0.65rem;
+			text-transform: uppercase;
+			letter-spacing: 0.06em;
+			color: var(--accent);
+			background: var(--accent-soft);
+			border: 1px solid rgba(63, 185, 80, 0.35);
 			border-radius: 999px;
 			padding: 0.1rem 0.55rem;
 		}
