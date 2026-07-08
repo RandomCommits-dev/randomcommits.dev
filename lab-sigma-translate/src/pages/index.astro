@@ -1,0 +1,46 @@
+---
+import SigmaTranslate from '../components/SigmaTranslate';
+import '../styles/global.css';
+---
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href={`${import.meta.env.BASE_URL}favicon.svg`} />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="generator" content={Astro.generator} />
+		<meta
+			name="description"
+			content="Convert Sigma detection rules to Splunk SPL, Elastic Lucene, or Microsoft KQL. Powered by pySigma in your browser, nothing is sent to a server."
+		/>
+		<title>Sigma Translate · lab-sigma-translate</title>
+	</head>
+	<body>
+		<main>
+			<p class="eyebrow">🧪 lab-sigma-translate</p>
+			<h1>Sigma Translate</h1>
+			<p class="lede">
+				Paste a Sigma detection rule and get the equivalent query for Splunk SPL,
+				Elastic Lucene, or Microsoft KQL. Detection-as-code translation without
+				ever leaving the page.
+			</p>
+
+			<div class="privacy-banner">
+				<span aria-hidden="true">🔒</span>
+				<p>
+					<strong>Runs in your browser.</strong> Your rules are never uploaded.
+					Conversion uses pySigma via Pyodide (WebAssembly), fully offline after
+					the first load.
+				</p>
+			</div>
+
+			<SigmaTranslate client:load />
+		</main>
+
+		<footer class="site-footer">
+			<a href="https://randomcommits.dev">randomcommits.dev</a>
+			<span> · </span>
+			<a href="https://github.com/RandomCommits-dev/lab-sigma-translate">Source</a>
+		</footer>
+	</body>
+</html>

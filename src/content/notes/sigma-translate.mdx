@@ -1,0 +1,55 @@
+---
+title: "Sigma rules, translated in the browser"
+description: "Convert Sigma detection rules to Splunk SPL, Elastic Lucene, or Microsoft KQL without uploading YAML to a server."
+pubDate: 2026-07-08
+tags: ["security", "sigma", "detection", "lab"]
+growth: "budding"
+---
+
+[Sigma](https://sigmahq.io/) is the lingua franca of detection engineering: a
+vendor-neutral YAML format for describing suspicious activity in log data. The
+[SigmaHQ rule repository](https://github.com/SigmaHQ/sigma) hosts thousands of
+community detections, but deploying them means translating each rule into your
+SIEM's query language.
+
+That translation step is where friction piles up. The canonical toolchain is
+[pySigma](https://github.com/SigmaHQ/pySigma), a Python library with pluggable
+backends for Splunk, Elasticsearch, Kusto, and dozens more. Powerful, but
+overkill when you just want to preview how a rule looks in Splunk SPL before
+committing it to a repo.
+
+## What the lab tool does
+
+[lab-sigma-translate](https://github.com/RandomCommits-dev/lab-sigma-translate)
+runs pySigma in your browser via [Pyodide](https://pyodide.org/) (Python compiled
+to WebAssembly). Paste a Sigma rule, pick a target backend, and get the
+equivalent query:
+
+- **Splunk SPL** for Splunk Enterprise and Cloud
+- **Elastic / Lucene** for Elasticsearch and OpenSearch
+- **Microsoft KQL** for Sentinel and Defender
+
+Nothing is uploaded. The first conversion downloads Pyodide and the pySigma
+packages (~tens of MB), then subsequent conversions are fast and fully offline.
+
+## Field names are the catch
+
+Sigma rules default to Sysmon-style field names like `Image` and `CommandLine`.
+Your SIEM probably uses something different: ECS (`process.executable`), Splunk
+CIM (`Processes.process_path`), or vendor schemas like Defender's
+`DeviceProcessEvents`. The converter gives you a starting point, not a
+drop-in query. Always verify field mappings against your data source before
+deploying.
+
+For production pipelines with custom field maps and logsource transforms, reach
+for [sigma-cli](https://github.com/SigmaHQ/sigma-cli) locally. The browser tool
+is for quick previews and learning, not CI/CD rule deployment.
+
+## When to reach for it
+
+- Previewing a SigmaHQ rule in your SIEM's syntax before writing a PR
+- Teaching someone how Sigma's `detection` block maps to real queries
+- Comparing how the same rule looks across Splunk, Elastic, and KQL
+- Working on sensitive rules you do not want to paste into a web converter
+
+Live at [lab-sigma-translate](https://randomcommits-dev.github.io/lab-sigma-translate/).
