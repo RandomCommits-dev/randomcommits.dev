@@ -28,18 +28,31 @@ function makeMessage(): string {
 export default function CommitGenerator() {
   const [message, setMessage] = useState<string>(makeMessage);
   const [count, setCount] = useState<number>(0);
+  const [copied, setCopied] = useState(false);
 
   function regenerate() {
     setMessage(makeMessage());
     setCount((c) => c + 1);
   }
 
+  async function copyMessage() {
+    const text = `git commit -m "${message}"`;
+    await navigator.clipboard.writeText(text);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  }
+
   return (
     <div className="commit-card">
       <code className="commit-message">git commit -m "{message}"</code>
-      <button className="commit-button" onClick={regenerate}>
-        Generate another random commit
-      </button>
+      <div className="commit-actions">
+        <button className="commit-button" onClick={regenerate}>
+          Generate another random commit
+        </button>
+        <button className="commit-button commit-button-secondary" onClick={copyMessage}>
+          {copied ? 'Copied!' : 'Copy'}
+        </button>
+      </div>
       {count > 0 && (
         <p className="commit-count">
           {count} random commit{count === 1 ? '' : 's'} and counting.

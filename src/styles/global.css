@@ -127,6 +127,23 @@ h1 {
 .commit-button:hover { filter: brightness(1.08); }
 .commit-button:active { transform: translateY(1px); }
 
+.commit-actions {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.6rem;
+}
+
+.commit-button-secondary {
+	background: transparent;
+	color: var(--text);
+	border: 1px solid var(--border);
+}
+
+.commit-button-secondary:hover {
+	filter: none;
+	border-color: var(--accent);
+}
+
 .commit-count {
 	color: var(--muted);
 	font-size: 0.9rem;
@@ -134,6 +151,33 @@ h1 {
 }
 
 .grid-section { margin-top: 4rem; }
+
+.section-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: baseline;
+	gap: 1rem;
+	flex-wrap: wrap;
+	margin-bottom: 1.5rem;
+}
+
+.section-header h2 {
+	margin: 0;
+}
+
+.section-link {
+	color: var(--accent);
+	text-decoration: none;
+	font-size: 0.95rem;
+}
+
+.section-link:hover {
+	text-decoration: underline;
+}
+
+.latest-section {
+	margin-top: 3rem;
+}
 
 h2 {
 	font-size: 1.5rem;
@@ -220,6 +264,32 @@ a.tile {
 }
 
 .note-item a:hover { color: var(--accent); }
+
+.note-desc {
+	color: var(--muted);
+	font-size: 0.92rem;
+	margin: 0.35rem 0 0.5rem;
+	line-height: 1.5;
+}
+
+.growth-legend {
+	color: var(--muted);
+	font-size: 0.9rem;
+	margin: -1rem 0 2rem;
+	display: flex;
+	gap: 0.5rem;
+	flex-wrap: wrap;
+	align-items: center;
+}
+
+.growth-legend a {
+	color: var(--accent);
+	text-decoration: none;
+}
+
+.growth-legend a:hover {
+	text-decoration: underline;
+}
 
 .note-meta {
 	color: var(--muted);
