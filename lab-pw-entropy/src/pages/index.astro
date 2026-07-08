@@ -1,0 +1,45 @@
+---
+import PasswordLab from '../components/PasswordLab';
+import '../styles/global.css';
+---
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href={`${import.meta.env.BASE_URL}favicon.svg`} />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="generator" content={Astro.generator} />
+		<meta
+			name="description"
+			content="Visualize password strength with real entropy math, zxcvbn scoring, and a diceware passphrase generator. Runs entirely in your browser."
+		/>
+		<title>Password Entropy Lab · lab-pw-entropy</title>
+	</head>
+	<body>
+		<main>
+			<p class="eyebrow">🧪 lab-pw-entropy</p>
+			<h1>Password Entropy Lab</h1>
+			<p class="lede">
+				See how strong a password really is. Real entropy math, zxcvbn pattern
+				detection, and a diceware passphrase generator, with an animated crack-time
+				meter that makes the numbers tangible.
+			</p>
+
+			<div class="privacy-banner">
+				<span aria-hidden="true">🔒</span>
+				<p>
+					<strong>Runs in your browser.</strong> Nothing you type is sent anywhere.
+					All scoring and random generation happen locally with Web Crypto.
+				</p>
+			</div>
+
+			<PasswordLab client:load />
+		</main>
+
+		<footer class="site-footer">
+			<a href="https://randomcommits.dev">randomcommits.dev</a>
+			<span> · </span>
+			<a href="https://github.com/RandomCommits-dev/lab-pw-entropy">Source</a>
+		</footer>
+	</body>
+</html>
