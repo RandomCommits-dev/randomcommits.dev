@@ -43,11 +43,6 @@ export const sections: LabSection[] = [
 				desc: 'Build a Content-Security-Policy visually, with plain-English explanations of every directive, then paste an existing header to see exactly what it would block or allow. Catches common mistakes like overly broad `unsafe-inline` or a missing `default-src`.',
 			},
 			{
-				repo: 'lab-pw-entropy',
-				type: 'browser · react',
-				desc: 'A password and passphrase strength visualizer with real entropy math, zxcvbn scoring, and a built-in diceware generator. An animated "time to crack" meter makes the math tangible and motivating.',
-			},
-			{
 				repo: 'lab-pwned-check',
 				type: 'browser · api',
 				desc: "Check whether a password appears in known breaches using Have I Been Pwned's k-anonymity range API. Only the first five characters of a SHA-1 hash ever leave the browser. A working demonstration of privacy-preserving breach lookups.",
