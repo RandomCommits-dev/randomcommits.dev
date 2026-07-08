@@ -53,11 +53,6 @@ export const sections: LabSection[] = [
 				desc: "Check whether a password appears in known breaches using Have I Been Pwned's k-anonymity range API. Only the first five characters of a SHA-1 hash ever leave the browser. A working demonstration of privacy-preserving breach lookups.",
 			},
 			{
-				repo: 'lab-cvss-calc',
-				type: 'browser · react',
-				desc: 'A faster, friendlier CVSS 3.1 and 4.0 calculator. Adjust the metrics, watch the score and severity update live, and copy a shareable vector string straight into your advisories and tickets.',
-			},
-			{
 				repo: 'lab-perm-decoder',
 				type: 'browser · util',
 				desc: 'Translate cryptic permissions into plain English. Paste a Unix mode like `0644`, a symbolic `rwxr-xr-x`, or a Windows ACL and get a clear, human breakdown of exactly who can do what.',
