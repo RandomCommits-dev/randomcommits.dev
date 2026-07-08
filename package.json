@@ -24,7 +24,7 @@
     "@zxcvbn-ts/language-common": "^3.0.4",
     "@zxcvbn-ts/language-en": "^3.0.2",
     "astro": "^7.0.2",
-    "pyodide": "^0.27.7",
+    "pyodide": "314.0.0",
     "react": "^19.2.7",
     "react-dom": "^19.2.7"
   }
