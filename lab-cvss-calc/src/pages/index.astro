@@ -1,0 +1,45 @@
+---
+import CvssCalculator from '../components/CvssCalculator';
+import '../styles/global.css';
+---
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href={`${import.meta.env.BASE_URL}favicon.svg`} />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="generator" content={Astro.generator} />
+		<meta
+			name="description"
+			content="A fast, friendly CVSS 3.1 and 4.0 calculator. Adjust metrics, watch the score update live, and copy a shareable vector string. Runs entirely in your browser."
+		/>
+		<title>CVSS Calculator · lab-cvss-calc</title>
+	</head>
+	<body>
+		<main>
+			<p class="eyebrow">🧪 lab-cvss-calc</p>
+			<h1>CVSS Calculator</h1>
+			<p class="lede">
+				Score vulnerabilities with CVSS 3.1 or 4.0. Adjust the base metrics, watch
+				the severity update live, and copy the vector string straight into advisories
+				and tickets.
+			</p>
+
+			<div class="privacy-banner">
+				<span aria-hidden="true">🔒</span>
+				<p>
+					<strong>Runs in your browser.</strong> Nothing you enter is sent anywhere.
+					Scoring uses the official FIRST CVSS specifications, fully offline.
+				</p>
+			</div>
+
+			<CvssCalculator client:load />
+		</main>
+
+		<footer class="site-footer">
+			<a href="https://randomcommits.dev">randomcommits.dev</a>
+			<span> · </span>
+			<a href="https://github.com/RandomCommits-dev/lab-cvss-calc">Source</a>
+		</footer>
+	</body>
+</html>
