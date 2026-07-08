@@ -24,11 +24,14 @@ function createConverter(): SigmaConverter {
 		type: 'module',
 	});
 
-	return new SigmaConverter({
+	const engine = new SigmaConverter({
 		worker,
 		pipelinePackages: [],
-		onStatus: notifyStatus,
 	});
+
+	engine.addStatusListener(notifyStatus);
+
+	return engine;
 }
 
 export function getSigmaConverter(): SigmaConverter {
@@ -40,13 +43,19 @@ export function getSigmaConverter(): SigmaConverter {
 
 export function subscribeEngineStatus(listener: (status: EngineStatus) => void): () => void {
 	statusListeners.add(listener);
+	if (converter) {
+		listener(converter.getStatus());
+	}
 	return () => statusListeners.delete(listener);
 }
 
 export async function warmupEngine(
 	target: SigmaTarget,
 ): Promise<{ success: boolean; error?: string }> {
-	if (warmedTarget === target && getSigmaConverter().isReady()) {
+	const engine = getSigmaConverter();
+
+	if (warmedTarget === target && engine.isReady()) {
+		notifyStatus(engine.getStatus());
 		return { success: true };
 	}
 
@@ -56,10 +65,10 @@ export async function warmupEngine(
 
 	warmingTarget = target;
 	warmupPromise = (async () => {
-		const engine = getSigmaConverter();
 		const result = await engine.installBackend(target);
 		if (result.success) {
 			warmedTarget = target;
+			notifyStatus(engine.getStatus());
 		}
 		return result;
 	})();
@@ -102,16 +111,14 @@ export function disposeSigmaConverter(): void {
 }
 
 export function formatEngineStatus(status: EngineStatus): string {
-	if (status.phase === 'idle' && status.ready) {
+	if (status.error) {
+		return status.error;
+	}
+	if (status.ready) {
 		return 'Ready';
 	}
-
-	const parts: string[] = [];
-	if (status.phase) parts.push(status.phase);
-	if (status.message) parts.push(status.message);
-	if (status.progress != null && status.progress > 0 && status.progress < 100) {
-		parts.push(`${Math.round(status.progress)}%`);
+	if (status.pyodideReady) {
+		return 'Loading SIEM backend…';
 	}
-
-	return parts.join(' · ') || 'Loading conversion engine…';
+	return 'Loading conversion engine…';
 }

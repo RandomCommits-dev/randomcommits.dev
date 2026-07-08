@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import {
 	convertSigmaRule,
-	disposeSigmaConverter,
 	formatEngineStatus,
 	subscribeEngineStatus,
 	warmupEngine,
@@ -16,7 +15,7 @@ export default function SigmaTranslate() {
 	const [error, setError] = useState<string | null>(null);
 	const [converting, setConverting] = useState(false);
 	const [warming, setWarming] = useState(false);
-	const [statusText, setStatusText] = useState('Converter not loaded');
+	const [statusText, setStatusText] = useState('Click Load converter to begin');
 	const [ready, setReady] = useState(false);
 	const [copied, setCopied] = useState(false);
 	const [hasConverted, setHasConverted] = useState(false);
@@ -24,16 +23,10 @@ export default function SigmaTranslate() {
 	const preloadStarted = useRef(false);
 	const rootRef = useRef<HTMLDivElement>(null);
 
-	useEffect(() => {
-		const unsubStatus = subscribeEngineStatus((status) => {
-			setStatusText(formatEngineStatus(status));
-			setReady(status.ready);
-		});
-		return () => {
-			unsubStatus();
-			disposeSigmaConverter();
-		};
-	}, []);
+	useEffect(() => subscribeEngineStatus((status) => {
+		setStatusText(formatEngineStatus(status));
+		setReady(status.ready);
+	}), []);
 
 	const runWarmup = useCallback(async (nextTarget: SigmaTarget) => {
 		setWarming(true);
@@ -41,7 +34,10 @@ export default function SigmaTranslate() {
 		setReady(false);
 		try {
 			const result = await warmupEngine(nextTarget);
-			if (!result.success) {
+			if (result.success) {
+				setReady(true);
+				setStatusText('Ready');
+			} else {
 				setWarmupError(result.error ?? 'Failed to load conversion engine.');
 			}
 			return result.success;
