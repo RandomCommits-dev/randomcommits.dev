@@ -5,35 +5,53 @@ import { liveTools } from '../data/live-tools';
 import { ideaHref } from '../lib/lab-links';
 
 const total = sections.reduce((n, s) => n + s.ideas.length, 0);
+
+const tones = ['', 'tone-b', 'tone-c', 'tone-d'] as const;
+
+const monogram = (name: string) => {
+	const clean = name.replace(/^(lab|template|study)-/, '');
+	return clean.slice(0, 1).toUpperCase();
+};
 ---
 
 <BaseLayout
 	title="Coming soon · randomcommits.dev"
 	description="A roadmap of security-flavored, vibe-driven coding projects coming soon to randomcommits.dev."
 >
-	<p class="eyebrow">🧪 the lab</p>
-	<h1>Coming soon</h1>
-	<p class="lede">
-		{total} security-flavored, vibe-driven projects planned for the garden. Most
-		are privacy-first tools that run entirely in your browser. Nothing phones
-		home. Tended at random, shipped when the vibe is right.
-	</p>
+	<section class="hero">
+		<p class="eyebrow">The lab</p>
+		<h1>Coming soon</h1>
+		<p class="lede">
+			{total} security-flavored, vibe-driven projects planned for the garden. Most
+			are privacy-first tools that run entirely in your browser. Nothing phones
+			home. Tended at random, shipped when the vibe is right.
+		</p>
+	</section>
 
 	<section class="grid-section">
-		<h2>Live in the garden</h2>
+		<div class="section-head">
+			<h2>Live in the garden</h2>
+		</div>
 		<p class="section-blurb">
 			These browser tools are already shipped as interactive garden notes. Try them
 			in your browser: nothing you paste is sent anywhere.
 		</p>
-		<div class="grid">
-			{liveTools.map((tool) => (
-				<a class="tile" href={tool.gardenHref}>
-					<div class="idea-head">
-						<h3>{tool.repo}</h3>
-						<span class="live-badge">live</span>
+		<div class="story-grid">
+			{liveTools.map((tool, i) => (
+				<a class="story-row" href={tool.gardenHref}>
+					<div class:list={['story-thumb', tones[i % tones.length]]}>
+						{monogram(tool.repo)}
 					</div>
-					<p>{tool.description}</p>
-					<span class="badge">browser · garden note</span>
+					<div class="story-body">
+						<div class="idea-head">
+							<h3>{tool.repo}</h3>
+							<span class="live-badge">live</span>
+						</div>
+						<p>{tool.description}</p>
+						<div class="story-meta">
+							<span class="badge">browser · garden note</span>
+						</div>
+					</div>
 				</a>
 			))}
 		</div>
@@ -41,22 +59,31 @@ const total = sections.reduce((n, s) => n + s.ideas.length, 0);
 
 	{sections.map((section) => (
 		<section class="grid-section">
-			<h2>{section.title}</h2>
+			<div class="section-head">
+				<h2>{section.title}</h2>
+			</div>
 			<p class="section-blurb">{section.blurb}</p>
-			<div class="grid">
-				{section.ideas.map((idea) => (
+			<div class="story-grid">
+				{section.ideas.map((idea, i) => (
 					<a
-						class="tile"
+						class="story-row"
 						href={ideaHref(idea)}
 						target="_blank"
 						rel="noopener noreferrer"
 					>
-						<div class="idea-head">
-							<h3>{idea.repo}</h3>
-							<span class="soon-badge">soon</span>
+						<div class:list={['story-thumb', tones[i % tones.length]]}>
+							{monogram(idea.repo)}
 						</div>
-						<p>{idea.desc}</p>
-						<span class="badge">{idea.type}</span>
+						<div class="story-body">
+							<div class="idea-head">
+								<h3>{idea.repo}</h3>
+								<span class="soon-badge">soon</span>
+							</div>
+							<p>{idea.desc}</p>
+							<div class="story-meta">
+								<span class="badge">{idea.type}</span>
+							</div>
+						</div>
 					</a>
 				))}
 			</div>
@@ -66,7 +93,7 @@ const total = sections.reduce((n, s) => n + s.ideas.length, 0);
 	<style>
 		.section-blurb {
 			color: var(--muted);
-			margin: -0.75rem 0 1.5rem;
+			margin: -0.5rem 0 1.35rem;
 			max-width: 65ch;
 		}
 
@@ -75,7 +102,6 @@ const total = sections.reduce((n, s) => n + s.ideas.length, 0);
 			justify-content: space-between;
 			align-items: center;
 			gap: 0.75rem;
-			margin-bottom: 0.5rem;
 		}
 
 		.idea-head h3 {
@@ -84,26 +110,28 @@ const total = sections.reduce((n, s) => n + s.ideas.length, 0);
 
 		.soon-badge {
 			flex-shrink: 0;
-			font-size: 0.65rem;
+			font-size: 0.68rem;
+			font-weight: 650;
 			text-transform: uppercase;
-			letter-spacing: 0.06em;
-			color: #d29922;
-			background: rgba(210, 153, 34, 0.14);
-			border: 1px solid rgba(210, 153, 34, 0.35);
-			border-radius: 999px;
-			padding: 0.1rem 0.55rem;
+			letter-spacing: 0.05em;
+			color: #8a6a1f;
+			background: rgba(196, 149, 48, 0.14);
+			border: 1px solid rgba(196, 149, 48, 0.28);
+			border-radius: 4px;
+			padding: 0.12rem 0.45rem;
 		}
 
 		.live-badge {
 			flex-shrink: 0;
-			font-size: 0.65rem;
+			font-size: 0.68rem;
+			font-weight: 650;
 			text-transform: uppercase;
-			letter-spacing: 0.06em;
+			letter-spacing: 0.05em;
 			color: var(--accent);
 			background: var(--accent-soft);
-			border: 1px solid rgba(63, 185, 80, 0.35);
-			border-radius: 999px;
-			padding: 0.1rem 0.55rem;
+			border: 1px solid rgba(47, 107, 58, 0.28);
+			border-radius: 4px;
+			padding: 0.12rem 0.45rem;
 		}
 	</style>
 </BaseLayout>

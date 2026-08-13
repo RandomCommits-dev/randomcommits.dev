@@ -2,12 +2,6 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 
-const growthEmoji: Record<string, string> = {
-	seedling: '🌱',
-	budding: '🌿',
-	evergreen: '🌳',
-};
-
 const notes = (await getCollection('notes', ({ data }) => !data.draft)).sort(
 	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
 );
@@ -20,39 +14,46 @@ const fmt = (d: Date) =>
 	title="Garden · randomcommits.dev"
 	description="Notes, TILs, and half-baked ideas from randomcommits.dev, tended over time."
 >
-	<p class="eyebrow">🌿 the garden</p>
-	<h1>Notes from the garden</h1>
-	<p class="lede">
-		Notes, TILs, and half-baked ideas. Some are seedlings, some are evergreen.
-		All of them are works in progress.
-	</p>
+	<section class="hero">
+		<p class="eyebrow">The garden</p>
+		<h1>Notes from the garden</h1>
+		<p class="lede">
+			Notes, TILs, and half-baked ideas. Some are seedlings, some are evergreen.
+			All of them are works in progress.
+		</p>
+	</section>
 
 	<p class="growth-legend">
-		<span>🌱 seedling</span>
+		<span>seedling</span>
 		<span>·</span>
-		<span>🌿 budding</span>
+		<span>budding</span>
 		<span>·</span>
-		<span>🌳 evergreen</span>
+		<span>evergreen</span>
 		<span>·</span>
 		<a href="/garden/what-is-a-digital-garden/">What is a digital garden?</a>
 	</p>
 
 	{notes.length === 0 ? (
-		<p class="lede">Nothing's sprouted yet. Check back soon. 🌱</p>
+		<p class="lede">Nothing has sprouted yet. Check back soon.</p>
 	) : (
-		<ul class="note-list">
-			{notes.map((note) => (
-				<li class="note-item">
-					<a href={`/garden/${note.id}/`}>{note.data.title}</a>
-					{note.data.description && <p class="note-desc">{note.data.description}</p>}
-					<div class="note-meta">
-						<span>{growthEmoji[note.data.growth]} {note.data.growth}</span>
-						<span>·</span>
-						<span>{fmt(note.data.pubDate)}</span>
-						{note.data.tags.map((t) => <span class="badge">#{t}</span>)}
-					</div>
-				</li>
-			))}
-		</ul>
+		<>
+			<div class="section-head">
+				<h2>All notes</h2>
+			</div>
+			<ul class="note-list">
+				{notes.map((note) => (
+					<li class="note-item">
+						<a href={`/garden/${note.id}/`}>{note.data.title}</a>
+						{note.data.description && <p class="note-desc">{note.data.description}</p>}
+						<div class="note-meta">
+							<span class="badge">{note.data.growth}</span>
+							<span>·</span>
+							<span>{fmt(note.data.pubDate)}</span>
+							{note.data.tags.map((t) => <span class="badge">#{t}</span>)}
+						</div>
+					</li>
+				))}
+			</ul>
+		</>
 	)}
 </BaseLayout>

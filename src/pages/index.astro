@@ -23,10 +23,19 @@ const grouped = categories
 	.map((c) => ({ ...c, repos: repos.filter((r) => c.test(r.data.name)) }))
 	.filter((g) => g.repos.length > 0);
 
-// Shown only when the org has no qualifying repos yet.
+const featured = grouped[0];
+const rest = grouped.slice(1);
+
+const tones = ['', 'tone-b', 'tone-c', 'tone-d'] as const;
+
+const monogram = (name: string) => {
+	const clean = name.replace(/^(lab|template|study)-/, '');
+	return clean.slice(0, 1).toUpperCase();
+};
+
 const fallback = [
 	{ name: 'Flagship projects', desc: 'Built to last. The ones we are proud of.', tag: 'no prefix' },
-	{ name: 'lab-*', desc: 'Experiments & vibe-coding sessions.', tag: 'experiment' },
+	{ name: 'lab-*', desc: 'Experiments and vibe-coding sessions.', tag: 'experiment' },
 	{ name: 'template-*', desc: 'Starter templates we reach for.', tag: 'template' },
 	{ name: 'study-*', desc: 'Learning in public.', tag: 'study' },
 ];
@@ -34,12 +43,10 @@ const fallback = [
 
 <BaseLayout>
 	<section class="hero">
-		<p class="eyebrow">🌱 randomcommits.dev</p>
-		<h1>Welcome to the garden.</h1>
+		<h1>randomcommits</h1>
 		<p class="lede">
-			Our landing page and digital garden for all the random,
-			vibe-driven coding projects we work on. Some things here are
-			polished. Some are half-finished sketches. All of them are
+			A digital garden for random, vibe-driven coding projects. Some things
+			here are polished. Some are half-finished sketches. All of them are
 			commits we felt like making.
 		</p>
 		<CommitGenerator client:load />
@@ -63,32 +70,76 @@ const fallback = [
 	)}
 
 	{repos.length > 0 ? (
-		grouped.map((group) => (
-			<section class="grid-section">
-				<h2>{group.label}</h2>
-				<div class="grid">
-					{group.repos.map((r) => (
-						<a class="tile" href={r.data.homepage || r.data.url}>
-							<h3>{r.data.name}</h3>
-							<p>{r.data.description || 'No description yet.'}</p>
-							<span class="tile-meta">
-								{r.data.language && <span class="badge">{r.data.language}</span>}
-								{r.data.stars > 0 && <span class="badge">★ {r.data.stars}</span>}
-							</span>
-						</a>
-					))}
-				</div>
-			</section>
-		))
+		<>
+			{featured && (
+				<section class="grid-section">
+					<div class="section-head">
+						<h2>Featured</h2>
+					</div>
+					<div class="story-grid">
+						{featured.repos.map((r, i) => (
+							<a class="story-row" href={r.data.homepage || r.data.url}>
+								<div class:list={['story-thumb', tones[i % tones.length]]}>
+									{monogram(r.data.name)}
+								</div>
+								<div class="story-body">
+									<h3>{r.data.name}</h3>
+									<p>{r.data.description || 'No description yet.'}</p>
+									<div class="story-meta">
+										{r.data.language && <span class="badge">{r.data.language}</span>}
+										{r.data.stars > 0 && <span>★ {r.data.stars}</span>}
+										<span class="badge">{featured.label}</span>
+									</div>
+								</div>
+							</a>
+						))}
+					</div>
+				</section>
+			)}
+
+			{rest.map((group) => (
+				<section class="grid-section">
+					<div class="section-head">
+						<h2>{group.label}</h2>
+					</div>
+					<div class="story-grid">
+						{group.repos.map((r, i) => (
+							<a class="story-row" href={r.data.homepage || r.data.url}>
+								<div class:list={['story-thumb', tones[i % tones.length]]}>
+									{monogram(r.data.name)}
+								</div>
+								<div class="story-body">
+									<h3>{r.data.name}</h3>
+									<p>{r.data.description || 'No description yet.'}</p>
+									<div class="story-meta">
+										{r.data.language && <span class="badge">{r.data.language}</span>}
+										{r.data.stars > 0 && <span>★ {r.data.stars}</span>}
+									</div>
+								</div>
+							</a>
+						))}
+					</div>
+				</section>
+			))}
+		</>
 	) : (
 		<section class="grid-section">
-			<h2>What you'll find</h2>
-			<div class="grid">
-				{fallback.map((p) => (
-					<article class="tile">
-						<h3>{p.name}</h3>
-						<p>{p.desc}</p>
-						<span class="badge">{p.tag}</span>
+			<div class="section-head">
+				<h2>What you will find</h2>
+			</div>
+			<div class="story-grid">
+				{fallback.map((p, i) => (
+					<article class="story-row">
+						<div class:list={['story-thumb', tones[i % tones.length]]}>
+							{p.name.slice(0, 1)}
+						</div>
+						<div class="story-body">
+							<h3>{p.name}</h3>
+							<p>{p.desc}</p>
+							<div class="story-meta">
+								<span class="badge">{p.tag}</span>
+							</div>
+						</div>
 					</article>
 				))}
 			</div>

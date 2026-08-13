@@ -46,10 +46,14 @@ export default function CommitGenerator() {
     <div className="commit-card">
       <code className="commit-message">git commit -m "{message}"</code>
       <div className="commit-actions">
-        <button className="commit-button" onClick={regenerate}>
+        <button type="button" className="commit-button" onClick={regenerate}>
           Generate another random commit
         </button>
-        <button className="commit-button commit-button-secondary" onClick={copyMessage}>
+        <button
+          type="button"
+          className="commit-button commit-button-secondary"
+          onClick={copyMessage}
+        >
           {copied ? 'Copied!' : 'Copy'}
         </button>
       </div>

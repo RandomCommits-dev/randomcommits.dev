@@ -6,20 +6,32 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 	title="Page not found · randomcommits.dev"
 	description="This page hasn't been committed yet."
 >
-	<p class="eyebrow">404</p>
-	<h1>This page hasn't been committed yet.</h1>
-	<p class="lede">
-		The route you followed doesn't exist in the garden. Maybe it was never
-		pushed, or maybe it got rebased away.
-	</p>
-	<div class="grid">
-		<a class="tile" href="/">
-			<h3>Home</h3>
-			<p>Back to the landing page and repo grid.</p>
+	<section class="hero">
+		<p class="eyebrow">404</p>
+		<h1>This page hasn't been committed yet.</h1>
+		<p class="lede">
+			The route you followed does not exist in the garden. Maybe it was never
+			pushed, or maybe it got rebased away.
+		</p>
+	</section>
+
+	<div class="section-head">
+		<h2>Where to go</h2>
+	</div>
+	<div class="story-grid">
+		<a class="story-row" href="/">
+			<div class="story-thumb">H</div>
+			<div class="story-body">
+				<h3>Home</h3>
+				<p>Back to the landing page and project grid.</p>
+			</div>
 		</a>
-		<a class="tile" href="/garden">
-			<h3>Garden</h3>
-			<p>Browse notes, TILs, and half-baked ideas.</p>
+		<a class="story-row" href="/garden">
+			<div class="story-thumb tone-b">G</div>
+			<div class="story-body">
+				<h3>Garden</h3>
+				<p>Browse notes, TILs, and half-baked ideas.</p>
+			</div>
 		</a>
 		<a class="tile" href="/lab">
 			<h3>Labs</h3>

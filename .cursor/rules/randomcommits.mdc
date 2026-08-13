@@ -18,7 +18,7 @@ Astro 7 + React islands, deployed to **GitHub Pages** (custom apex domain
 - **Notes** live in `src/content/notes` (`.md`/`.mdx`). Growth stages: `seedling`, `budding`, `evergreen`.
 - **Tools are privacy-first:** run entirely client-side, nothing leaves the browser, and say so in the UI.
 - **Homepage grid** is live from the org API (`repos` loader in `src/content.config.ts`). **`src/pages/lab.astro`** is the public "coming soon" roadmap, data-driven via its `sections` array.
-- **Styling:** dark garden theme via CSS vars in `src/layouts/BaseLayout.astro`; reuse `.tile`, `.grid`, `.badge`.
+- **Styling:** light editorial theme via CSS vars in `src/styles/global.css`; reuse `.story-row`, `.story-grid`, `.section-head`, `.badge`.
 
 ## Backlog
 The planned security tools/ideas are the `sections` array in `src/pages/lab.astro`
